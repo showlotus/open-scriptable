@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "ES2015",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "importHelpers": false,
+    "downlevelIteration": true,
+    "preserveSymlinks": true
+  },
+  "include": ["src/**/*", "scriptable.d.ts", "globalconfig.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

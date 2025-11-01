@@ -19,7 +19,7 @@
     "apple",
     "scriptable-scripts"
   ],
-  "author": "showlotus",
+  "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">=20.19.0 || >=22.12.0",

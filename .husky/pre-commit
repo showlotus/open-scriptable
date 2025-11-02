@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# 运行 lint-staged
+npm run lint-staged

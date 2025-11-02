@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# 获取目标分支名称
+branch=$(git symbolic-ref --short HEAD)
+
+# 检查是否 push 到 master 分支
+if [ "$branch" = "master" ]; then
+  echo "🔍 检测到 push 到 master 分支，检查 version 是否已更新..."
+  node scripts/check-version.js
+  
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+    echo "❌ Version 检查失败"
+    exit 1
+  fi
+  
+  echo "✅ Version 检查通过"
+fi
+
+# 运行 lint-staged（如果有文件需要 lint）
+npm run lint-staged || true
+

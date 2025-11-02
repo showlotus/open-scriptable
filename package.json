@@ -1,7 +1,7 @@
 {
   "name": "@showlotus/open-scriptable",
   "version": "0.1.0",
-  "description": "Open-source Scriptable scripts for iOS",
+  "description": "Open-source Scriptable scripts for iOS Widgets",
   "type": "module",
   "packageManager": "pnpm@8.10.0",
   "repository": {
@@ -14,14 +14,17 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "keywords": [
     "scriptable",
     "open-source",
     "ios",
     "apple",
-    "scriptable-scripts"
+    "scriptable-scripts",
+    "widget"
   ],
   "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
@@ -31,7 +34,18 @@
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
     "terser": "^5.44.0",
     "vite": "^7.1.12"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "prettier --write --ignore-unknown"
+    ],
+    "*.{json,md}": [
+      "prettier --write --ignore-unknown"
+    ]
   }
 }

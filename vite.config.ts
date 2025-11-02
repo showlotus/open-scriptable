@@ -1,17 +1,21 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 import { readdirSync } from 'node:fs';
+import { removeTypesPlugin } from './plugins/remove-types';
 
 const input = readdirSync('./src')
   .filter(file => file.endsWith('.ts'))
-  .reduce((acc, file) => {
-    const name = file.replace('.ts', '');
-    acc[name] = resolve('./src', file);
-    return acc;
-  }, {} as Record<string, string>);
+  .reduce(
+    (acc, file) => {
+      const name = file.replace('.ts', '');
+      acc[name] = resolve('./src', file);
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 
 export default defineConfig({
-  plugins: [],
+  plugins: [removeTypesPlugin()],
   build: {
     target: 'es2015',
     outDir: 'dist',

@@ -56,7 +56,7 @@ const widget = new ListWidget();
 // 设置内边距
 // widget.setPadding(10, 10, 10, 10);
 // 设置背景颜色（深色背景）
-widget.backgroundColor = Color.dynamic(new Color('#FFFFFF'), new Color('#000000'));
+widget.backgroundColor = Color.dynamic(new Color('#FFFFFF'), new Color('#1c1c1c'));
 // 设置间距
 widget.spacing = 10;
 
@@ -116,25 +116,30 @@ displayDays.forEach(day => {
   // 日期文本
   const targetDate = getTargetDate(day.date);
   const dateText = dateRow.addText(targetDate ? formatDate(targetDate) : ' ');
-  dateText.font = Font.systemFont(9);
-  dateText.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
+  dateText.font = Font.regularRoundedSystemFont(10);
+  dateText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
 
   // 添加弹性间隔，将右侧内容推到右边
   row.addSpacer();
 
-  // 右侧天数倒计时区域（垂直布局）
+  // 右侧天数倒计时区域
   const rightContent = row.addStack();
-  rightContent.layoutVertically();
-  rightContent.spacing = 2;
+  rightContent.layoutHorizontally();
+  rightContent.bottomAlignContent();
 
   // 计算天数
   const daysLeft = targetDate ? getDaysUntilTargetDate(targetDate) : ' ';
 
   // 天数数字（大号加粗）
   const daysText = rightContent.addText(daysLeft.toString());
-  daysText.font = Font.boldSystemFont(24);
+  daysText.font = Font.boldRoundedSystemFont(24);
   daysText.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
   daysText.rightAlignText();
+
+  // const dayText = rightContent.addText('天');
+  // dayText.font = Font.boldRoundedSystemFont(12);
+  // dayText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
+  // dayText.rightAlignText();
 });
 
 if (config.runsInWidget) {

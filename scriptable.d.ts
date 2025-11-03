@@ -7,36 +7,9 @@ declare global {
    * 字体类
    */
   class Font {
-    /** 粗体系统字体 */
-    static boldSystemFont(size: number): Font;
-    /** 斜体系统字体 */
-    static italicSystemFont(size: number): Font;
-    /** 细体系统字体 */
-    static lightSystemFont(size: number): Font;
-    /** 中等系统字体 */
-    static mediumSystemFont(size: number): Font;
-    /** 常规系统字体 */
-    static regularSystemFont(size: number): Font;
-    /** 半粗体系统字体 */
-    static semiboldSystemFont(size: number): Font;
-    /** 系统字体 */
-    static systemFont(size: number): Font;
-    /** 超细系统字体 */
-    static ultraLightSystemFont(size: number): Font;
-    /** 极细系统字体 */
-    static thinSystemFont(size: number): Font;
-    /** 重磅系统字体 */
-    static heavySystemFont(size: number): Font;
-    /** 黑色系统字体 */
-    static blackSystemFont(size: number): Font;
-    /** 等宽系统字体 */
-    static monospacedSystemFont(size: number, weight: number): Font;
-    /** 等宽数字系统字体 */
-    static monospacedDigitSystemFont(size: number, weight: number): Font;
-    /** 圆角系统字体 */
-    static roundedSystemFont(size: number, weight: number): Font;
-    /** 自定义字体 */
-    static custom(name: string, size: number): Font;
+    /** 构造函数，创建自定义字体 */
+    constructor(name: string, size: number);
+
     /** 大标题字体 */
     static largeTitle(): Font;
     /** 标题 1 字体 */
@@ -59,6 +32,67 @@ declare global {
     static caption1(): Font;
     /** 说明 2 字体 */
     static caption2(): Font;
+
+    /** 系统字体 */
+    static systemFont(size: number): Font;
+    /** 超细系统字体 */
+    static ultraLightSystemFont(size: number): Font;
+    /** 极细系统字体 */
+    static thinSystemFont(size: number): Font;
+    /** 细体系统字体 */
+    static lightSystemFont(size: number): Font;
+    /** 常规系统字体 */
+    static regularSystemFont(size: number): Font;
+    /** 中等系统字体 */
+    static mediumSystemFont(size: number): Font;
+    /** 半粗体系统字体 */
+    static semiboldSystemFont(size: number): Font;
+    /** 粗体系统字体 */
+    static boldSystemFont(size: number): Font;
+    /** 重磅系统字体 */
+    static heavySystemFont(size: number): Font;
+    /** 黑色系统字体 */
+    static blackSystemFont(size: number): Font;
+    /** 斜体系统字体 */
+    static italicSystemFont(size: number): Font;
+
+    /** 超细等宽系统字体 */
+    static ultraLightMonospacedSystemFont(size: number): Font;
+    /** 极细等宽系统字体 */
+    static thinMonospacedSystemFont(size: number): Font;
+    /** 细体等宽系统字体 */
+    static lightMonospacedSystemFont(size: number): Font;
+    /** 常规等宽系统字体 */
+    static regularMonospacedSystemFont(size: number): Font;
+    /** 中等等宽系统字体 */
+    static mediumMonospacedSystemFont(size: number): Font;
+    /** 半粗体等宽系统字体 */
+    static semiboldMonospacedSystemFont(size: number): Font;
+    /** 粗体等宽系统字体 */
+    static boldMonospacedSystemFont(size: number): Font;
+    /** 重磅等宽系统字体 */
+    static heavyMonospacedSystemFont(size: number): Font;
+    /** 黑色等宽系统字体 */
+    static blackMonospacedSystemFont(size: number): Font;
+
+    /** 超细圆角系统字体 */
+    static ultraLightRoundedSystemFont(size: number): Font;
+    /** 极细圆角系统字体 */
+    static thinRoundedSystemFont(size: number): Font;
+    /** 细体圆角系统字体 */
+    static lightRoundedSystemFont(size: number): Font;
+    /** 常规圆角系统字体 */
+    static regularRoundedSystemFont(size: number): Font;
+    /** 中等圆角系统字体 */
+    static mediumRoundedSystemFont(size: number): Font;
+    /** 半粗体圆角系统字体 */
+    static semiboldRoundedSystemFont(size: number): Font;
+    /** 粗体圆角系统字体 */
+    static boldRoundedSystemFont(size: number): Font;
+    /** 重磅圆角系统字体 */
+    static heavyRoundedSystemFont(size: number): Font;
+    /** 黑色圆角系统字体 */
+    static blackRoundedSystemFont(size: number): Font;
   }
 
   /**

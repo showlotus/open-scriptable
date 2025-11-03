@@ -88,6 +88,7 @@ if (displayDays.length < displayCount) {
 
 // 创建每个生日条目
 displayDays.forEach((day, index) => {
+  const isEmptyData = day.name.trim().length === 0;
   // 创建行容器（水平布局）
   const row = widget.addStack();
   row.layoutHorizontally();
@@ -114,8 +115,8 @@ displayDays.forEach((day, index) => {
   dateRow.spacing = 2;
 
   // 日期文本
-  const targetDate = getTargetDate(day.date);
-  const dateText = dateRow.addText(targetDate ? formatDate(targetDate) : ' ');
+  const targetDate = isEmptyData ? null : getTargetDate(day.date);
+  const dateText = dateRow.addText(isEmptyData ? ' ' : formatDate(targetDate!));
   dateText.font = Font.regularRoundedSystemFont(9);
   dateText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
 
@@ -132,7 +133,7 @@ displayDays.forEach((day, index) => {
   // rightContent.borderColor = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
 
   // 计算天数
-  const daysLeft = targetDate ? getDaysUntilTargetDate(targetDate) : ' ';
+  const daysLeft = isEmptyData ? ' ' : getDaysUntilTargetDate(targetDate!);
 
   // 天数数字（大号加粗）
   // const daysText = rightContent.addText(daysLeft.toString());
@@ -154,10 +155,12 @@ displayDays.forEach((day, index) => {
   const dayStack = rightContent.addStack();
   dayStack.setPadding(0, 0, 4, 0);
 
-  const dayText = dayStack.addText('天');
-  dayText.font = Font.boldRoundedSystemFont(10);
-  dayText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
-  dayText.rightAlignText();
+  if (!isEmptyData) {
+    const dayText = dayStack.addText('天');
+    dayText.font = Font.boldRoundedSystemFont(10);
+    dayText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
+    dayText.rightAlignText();
+  }
 
   if (index < displayDays.length - 1) {
     const splitLineStack = widget.addStack();
@@ -165,7 +168,9 @@ displayDays.forEach((day, index) => {
     splitLineStack.setPadding(0, 0, 0, 0);
     splitLineStack.size = new Size(widgetSize === 'small' ? 126 : 306, 1);
     splitLineStack.borderWidth = 1;
-    splitLineStack.borderColor = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
+    splitLineStack.borderColor = isEmptyData
+      ? new Color('#FFFFFF', 0)
+      : Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
     splitLineStack.cornerRadius = 1;
   }
 });

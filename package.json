@@ -16,7 +16,8 @@
     "dev": "vite",
     "build": "vite build",
     "prepare": "husky",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "postpublish": "node scripts/post-publish.js"
   },
   "keywords": [
     "scriptable",

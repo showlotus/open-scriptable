@@ -45,9 +45,8 @@ eval(code);
 ```
 
 <div>
-  <img src="./res/count-down/small.png" alt="small" width="300">
-  <img src="./res/count-down/medium.png" alt="medium" width="300">
-  <img src="./res/count-down/large.png" alt="large" width="300">
+  <img src="./res/count-down/light.png" alt="light" width="300">
+  <img src="./res/count-down/dark.png" alt="dark" width="300">
 </div>
 
 ## 开发

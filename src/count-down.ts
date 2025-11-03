@@ -58,7 +58,7 @@ const widget = new ListWidget();
 // 设置背景颜色（深色背景）
 widget.backgroundColor = Color.dynamic(new Color('#FFFFFF'), new Color('#1c1c1c'));
 // 设置间距
-widget.spacing = 10;
+widget.spacing = 8;
 
 // 示例生日数据
 const days = [
@@ -87,21 +87,21 @@ if (displayDays.length < displayCount) {
 }
 
 // 创建每个生日条目
-displayDays.forEach(day => {
+displayDays.forEach((day, index) => {
   // 创建行容器（水平布局）
   const row = widget.addStack();
   row.layoutHorizontally();
-  row.spacing = 10;
+  // row.spacing = 5;
 
   // 左侧内容区域（垂直布局）
   const leftContent = row.addStack();
   leftContent.layoutVertically();
-  leftContent.spacing = 4;
+  leftContent.spacing = 1;
 
   // 第一行：名称
   const titleRow = leftContent.addStack();
   titleRow.layoutHorizontally();
-  titleRow.spacing = 6;
+  titleRow.spacing = 2;
 
   // 名称
   const titleText = titleRow.addText(day.name);
@@ -111,12 +111,12 @@ displayDays.forEach(day => {
   // 第二行：日期
   const dateRow = leftContent.addStack();
   dateRow.layoutHorizontally();
-  dateRow.spacing = 8;
+  dateRow.spacing = 2;
 
   // 日期文本
   const targetDate = getTargetDate(day.date);
   const dateText = dateRow.addText(targetDate ? formatDate(targetDate) : ' ');
-  dateText.font = Font.regularRoundedSystemFont(10);
+  dateText.font = Font.regularRoundedSystemFont(9);
   dateText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
 
   // 添加弹性间隔，将右侧内容推到右边
@@ -126,20 +126,48 @@ displayDays.forEach(day => {
   const rightContent = row.addStack();
   rightContent.layoutHorizontally();
   rightContent.bottomAlignContent();
+  rightContent.spacing = 2;
+
+  // rightContent.borderWidth = 1;
+  // rightContent.borderColor = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
 
   // 计算天数
   const daysLeft = targetDate ? getDaysUntilTargetDate(targetDate) : ' ';
 
   // 天数数字（大号加粗）
-  const daysText = rightContent.addText(daysLeft.toString());
-  daysText.font = Font.boldRoundedSystemFont(24);
+  // const daysText = rightContent.addText(daysLeft.toString());
+  const daysStack = rightContent.addStack();
+  // daysStack.setPadding(5, 0, 0, 0);
+  daysStack.spacing = 2;
+  daysStack.topAlignContent();
+
+  // daysStack.borderColor = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
+  // daysStack.borderWidth = 1;
+
+  // const daysText = daysStack.addText('000');
+  const daysText = daysStack.addText(daysLeft.toString());
+  daysText.font = Font.boldRoundedSystemFont(22);
+  // daysText.minimumScaleFactor = 0.8;
   daysText.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
   daysText.rightAlignText();
 
-  // const dayText = rightContent.addText('天');
-  // dayText.font = Font.boldRoundedSystemFont(12);
-  // dayText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
-  // dayText.rightAlignText();
+  const dayStack = rightContent.addStack();
+  dayStack.setPadding(0, 0, 4, 0);
+
+  const dayText = dayStack.addText('天');
+  dayText.font = Font.boldRoundedSystemFont(10);
+  dayText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
+  dayText.rightAlignText();
+
+  if (index < displayDays.length - 1) {
+    const splitLineStack = widget.addStack();
+    splitLineStack.layoutHorizontally();
+    splitLineStack.setPadding(0, 0, 0, 0);
+    splitLineStack.size = new Size(widgetSize === 'small' ? 126 : 306, 1);
+    splitLineStack.borderWidth = 1;
+    splitLineStack.borderColor = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
+    splitLineStack.cornerRadius = 1;
+  }
 });
 
 if (config.runsInWidget) {

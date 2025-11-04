@@ -73,9 +73,13 @@ const days = [
 ];
 
 // 限制显示数量
-const displayDays = (globalConfig.days || [])
-  .sort((a: any, b: any) => (a.date > b.date ? 1 : -1))
-  .slice(0, displayCount) as any[];
+const displayDays = (Object.entries(globalConfig.days || {}) as [string, string][])
+  .map(([name, date]) => ({
+    name,
+    date,
+  }))
+  .sort((a, b) => (a.date > b.date ? 1 : -1))
+  .slice(0, displayCount);
 
 if (displayDays.length < displayCount) {
   for (let i = displayDays.length; i < displayCount; i++) {

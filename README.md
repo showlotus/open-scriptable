@@ -23,20 +23,11 @@ eval(code);
 ```js
 // 全局配置
 const globalConfig = {
-  days: [
-    {
-      name: '生日',
-      date: '2025-12-23',
-    },
-    {
-      name: '元旦',
-      date: '2026-01-01',
-    },
-    {
-      name: '除夕',
-      date: '2026-02-16',
-    },
-  ],
+  days: {
+    生日: '2025-12-23',
+    元旦: '2026-01-01',
+    除夕: '2026-02-16',
+  },
 };
 
 const url = 'https://cdn.jsdelivr.net/npm/@showlotus/open-scriptable@latest/dist/count-down.js';

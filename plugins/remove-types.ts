@@ -46,7 +46,7 @@ export const removeTypesPlugin = (): Plugin => {
             content = content.replace(/^export\s*\{\s*\}\s*;?\s*\n+\s*/m, '');
 
             // 开发环境添加 DEV 环境变量
-            content = /* js */ `const __IS_DEV__ = true;\n` + content;
+            content = content.replace('__IS_DEV__', 'true');
 
             // 设置响应头
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');

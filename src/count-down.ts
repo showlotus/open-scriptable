@@ -75,7 +75,7 @@ const MOCK_DAYS = {
 
 // 限制显示数量
 const displayDays: { name: string; date: string; isEmpty?: boolean }[] = (
-  Object.entries(__GLOBAL_CONFIG__.days || {}) as [string, string][]
+  Object.entries(__IS_DEV__ ? MOCK_DAYS : __GLOBAL_CONFIG__.days || {}) as [string, string][]
 )
   .map(([name, date]) => ({
     name,

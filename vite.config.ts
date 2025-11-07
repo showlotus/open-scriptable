@@ -14,25 +14,30 @@ const input = readdirSync('./src')
     {} as Record<string, string>,
   );
 
-export default defineConfig({
-  plugins: [removeTypesPlugin()],
-  build: {
-    target: 'es2015',
-    outDir: 'dist',
-    minify: 'terser',
-    rollupOptions: {
-      input,
-      output: {
-        entryFileNames: '[name].js',
-        format: 'es',
-        manualChunks: undefined,
+export default defineConfig(({ mode }) => {
+  return {
+    build: {
+      target: 'es2015',
+      outDir: 'dist',
+      minify: 'terser',
+      rollupOptions: {
+        input,
+        output: {
+          entryFileNames: '[name].js',
+          format: 'es',
+          manualChunks: undefined,
+        },
+        preserveEntrySignatures: 'strict',
       },
-      preserveEntrySignatures: 'strict',
+      emptyOutDir: true,
     },
-    emptyOutDir: true,
-  },
-  server: {
-    port: 3000,
-    host: true,
-  },
+    plugins: [removeTypesPlugin()],
+    define: {
+      __IS_DEV__: mode === 'development',
+    },
+    server: {
+      port: 3000,
+      host: true,
+    },
+  };
 });

@@ -45,6 +45,9 @@ export const removeTypesPlugin = (): Plugin => {
             // 移除开头的 export {} 及其后的空行（支持多种格式）
             content = content.replace(/^export\s*\{\s*\}\s*;?\s*\n+\s*/m, '');
 
+            // 开发环境添加 DEV 环境变量
+            content = /* js */ `const __IS_DEV__ = true;\n` + content;
+
             // 设置响应头
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             res.statusCode = 200;

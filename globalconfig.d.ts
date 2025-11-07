@@ -1,5 +1,6 @@
 export {};
 
 declare global {
-  const globalConfig: any;
+  const __GLOBAL_CONFIG__: any;
+  const __IS_DEV__: boolean;
 }

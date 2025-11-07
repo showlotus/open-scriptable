@@ -4,7 +4,7 @@
 
 ```javascript
 // 全局配置
-const globalConfig = {
+const __GLOBAL_CONFIG__ = {
   name: 'World',
 };
 // 加载脚本
@@ -14,7 +14,7 @@ const code = await new Request(url).loadString();
 eval(code);
 ```
 
-<img src="./res/hello-world.png" alt="small" width="300">
+<img src="./res/hello-world.jpeg" alt="small" width="300">
 
 ## 组件列表
 
@@ -22,11 +22,15 @@ eval(code);
 
 ```js
 // 全局配置
-const globalConfig = {
+const __GLOBAL_CONFIG__ = {
   days: {
-    生日: '2025-12-23',
     元旦: '2026-01-01',
-    除夕: '2026-02-16',
+    春节: '2026-02-17',
+    清明节: '2026-04-04',
+    劳动节: '2026-05-01',
+    端午节: '2026-06-19',
+    国庆节: '2026-10-01',
+    中秋节: '2026-10-06',
   },
 };
 
@@ -36,8 +40,8 @@ eval(code);
 ```
 
 <div>
-  <img src="./res/count-down/light.png" alt="light" width="300">
-  <img src="./res/count-down/dark.png" alt="dark" width="300">
+  <img src="./res/count-down/light.jpeg" alt="light" width="300">
+  <img src="./res/count-down/dark.jpeg" alt="dark" width="300">
 </div>
 
 ## 开发

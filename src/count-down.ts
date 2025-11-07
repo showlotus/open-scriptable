@@ -60,8 +60,8 @@ widget.backgroundColor = Color.dynamic(new Color('#FFFFFF'), new Color('#1c1c1c'
 // 设置间距
 widget.spacing = 8;
 
-// 示例生日数据
-const DEBUG_DAYS = {
+// 示例日期
+const MOCK_DAYS = {
   昨天: '2025-11-06',
   今天: '2025-11-07',
   元旦: '2026-01-01',
@@ -75,7 +75,7 @@ const DEBUG_DAYS = {
 
 // 限制显示数量
 const displayDays: { name: string; date: string; isEmpty?: boolean }[] = (
-  Object.entries(__IS_DEV__ ? DEBUG_DAYS : __GLOBAL_CONFIG__.days || {}) as [string, string][]
+  Object.entries(__GLOBAL_CONFIG__.days || {}) as [string, string][]
 )
   .map(([name, date]) => ({
     name,

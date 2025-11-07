@@ -1,6 +1,6 @@
 {
   "name": "@showlotus/open-scriptable",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Open-source Scriptable scripts for iOS Widgets",
   "type": "module",
   "packageManager": "pnpm@8.10.0",

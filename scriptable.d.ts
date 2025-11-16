@@ -837,7 +837,7 @@ declare global {
     /** 缩放因子 */
     respectScreenScale: boolean;
 
-    constructor(size: Size);
+    constructor();
 
     /** 获取图像 */
     getImage(): Image;
@@ -853,6 +853,8 @@ declare global {
     setLineWidth(width: number): void;
     /** 填充矩形 */
     fill(rect: Rect): void;
+    /** 填充矩形 */
+    fillRect(rect: Rect): void;
     /** 填充椭圆 */
     fillEllipse(rect: Rect): void;
     /** 描边矩形 */

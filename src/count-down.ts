@@ -6,7 +6,7 @@ if (config.runsInWidget) {
   widgetSize = config.widgetFamily || 'small';
 } else {
   // DEBUG
-  widgetSize = 'large';
+  widgetSize = 'small';
 }
 
 // 不同尺寸的要展示的数量
@@ -123,7 +123,7 @@ displayDays.forEach((day, index) => {
 
   // 日期名称
   const titleText = titleRow.addText(day.name);
-  titleText.font = Font.systemFont(16);
+  titleText.font = Font.mediumRoundedSystemFont(14);
   titleText.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
 
   // 日期行
@@ -134,7 +134,7 @@ displayDays.forEach((day, index) => {
   // 日期文本
   const targetDate = day.isEmpty ? null : getTargetDate(day.date);
   const dateText = dateRow.addText(day.isEmpty ? ' ' : formatDate(targetDate!));
-  dateText.font = Font.regularRoundedSystemFont(9);
+  dateText.font = Font.regularRoundedSystemFont(10);
   dateText.textColor = Color.dynamic(new Color('#979797'), new Color('#8e8e8e'));
 
   // 添加弹性间隔，将右侧内容推到右边
@@ -154,7 +154,7 @@ displayDays.forEach((day, index) => {
   daysStack.topAlignContent();
 
   const daysText = daysStack.addText(daysLeft.toString());
-  daysText.font = Font.boldRoundedSystemFont(22);
+  daysText.font = Font.mediumRoundedSystemFont(24);
   daysText.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
   daysText.rightAlignText();
 

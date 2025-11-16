@@ -39,10 +39,17 @@ const code = await new Request(url).loadString();
 eval(code);
 ```
 
-<div>
+<!-- <div>
   <img src="./res/count-down/light.jpeg" alt="light" width="300">
   <img src="./res/count-down/dark.jpeg" alt="dark" width="300">
+</div> -->
+
+<div>
+  <img src="./res/count-down/light-v2.jpeg" alt="light" width="300">
+  <img src="./res/count-down/dark-v2.jpeg" alt="dark" width="300">
 </div>
+
+### 月度消费组件
 
 ## 开发
 

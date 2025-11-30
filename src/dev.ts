@@ -1,5 +1,5 @@
 // @ts-nocheck
-function render() {
+async function render() {
   async function fetchWithTimeout(url, timeoutMs = 3000) {
     const fetchPromise = (async () => {
       const req = new Request(url);

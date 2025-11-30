@@ -11,7 +11,9 @@ const __GLOBAL_CONFIG__ = {
 const url = 'https://cdn.jsdelivr.net/npm/@showlotus/open-scriptable@latest/dist/hello-world.js';
 const code = await new Request(url).loadString();
 // 执行脚本
-eval(code);
+const body = `const __GLOBAL_CONFIG__ = ${JSON.stringify(__GLOBAL_CONFIG__)};\n${code}`;
+const render = new Function(body);
+await render();
 ```
 
 <div>
@@ -39,7 +41,9 @@ const __GLOBAL_CONFIG__ = {
 
 const url = 'https://cdn.jsdelivr.net/npm/@showlotus/open-scriptable@latest/dist/count-down.js';
 const code = await new Request(url).loadString();
-eval(code);
+const body = `const __GLOBAL_CONFIG__ = ${JSON.stringify(__GLOBAL_CONFIG__)};\n${code}`;
+const render = new Function(body);
+await render();
 ```
 
 <!-- <div>
@@ -52,7 +56,7 @@ eval(code);
   <img src="./res/count-down/dark-v2.jpeg" alt="dark" width="300">
 </div>
 
-### 月度消费组件
+<!-- ### 月度消费组件 -->
 
 ## 开发
 
@@ -71,5 +75,6 @@ pnpm dev
 const url = 'http://192.168.5.6:3000/src/hello-world.ts';
 const code = await new Request(url).loadString();
 // 执行脚本
-eval(code);
+const render = new Function(code);
+await render();
 ```

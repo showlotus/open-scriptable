@@ -104,7 +104,7 @@ function render() {
     })
     .slice(0, displayCount);
 
-  if (displayDays.length < displayCount) {
+  if (displayDays.length > 0 && displayDays.length < displayCount) {
     for (let i = displayDays.length; i < displayCount; i++) {
       displayDays.push({
         name: '',

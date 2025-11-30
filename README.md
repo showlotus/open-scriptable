@@ -14,7 +14,10 @@ const code = await new Request(url).loadString();
 eval(code);
 ```
 
-<img src="./res/hello-world.jpeg" alt="small" width="300">
+<div>
+  <img src="./res/hello-world/light.png" alt="light" width="300">
+  <img src="./res/hello-world/dark.jpeg" alt="dark" width="300">
+</div>
 
 ## 组件列表
 

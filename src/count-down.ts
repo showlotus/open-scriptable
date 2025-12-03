@@ -15,7 +15,7 @@ function render() {
     widgetSize = config.widgetFamily || 'small';
   } else {
     // DEBUG
-    widgetSize = 'medium';
+    widgetSize = 'large';
   }
 
   // 不同尺寸的要展示的数量
@@ -60,6 +60,22 @@ function render() {
     }
   }
 
+  // 绘制线段
+  function drawLine(width: number, height: number, color: Color) {
+    const context = new DrawContext();
+    context.size = new Size(width, height);
+    context.opaque = false;
+    context.respectScreenScale = true;
+    context.setFillColor(color);
+
+    const backgroundPath = new Path();
+    backgroundPath.addRoundedRect(new Rect(0, 0, width, height), height / 2, height / 2);
+    context.addPath(backgroundPath);
+    context.fillPath();
+
+    return context.getImage();
+  }
+
   // 创建小组件
   const widget = new ListWidget();
   // 使用默认内边距
@@ -76,19 +92,20 @@ function render() {
     元旦: '2026-01-01',
     春节: '2026-02-17',
     清明节: '2026-04-04',
-    劳动节: '2026-05-01',
-    端午节: '2026-06-19',
-    国庆节: '2026-10-01',
-    中秋节: '2026-10-06',
+    // 劳动节: '2026-05-01',
+    // 端午节: '2026-06-19',
+    // 国庆节: '2026-10-01',
+    // 中秋节: '2026-10-06',
   };
 
   // 限制显示数量
-  const displayDays: { name: string; date: string; isEmpty?: boolean }[] = (
+  const displayDays: { name: string; date: string; isEmpty: boolean }[] = (
     Object.entries((__IS_DEV__ ? MOCK_DAYS : getConfig('days', {})) || {}) as [string, string][]
   )
     .map(([name, date]) => ({
       name,
       date,
+      isEmpty: false,
     }))
     .sort((a, b) => (a.date > b.date ? 1 : -1))
     .filter(v => {
@@ -185,25 +202,12 @@ function render() {
 
       const width = widgetSize === 'small' ? 126 : 305;
       const height = 1;
-      const context = new DrawContext();
-      context.size = new Size(width, height);
-      context.opaque = false;
-      context.respectScreenScale = true;
+      let color = new Color('#8C8C8C', 0.2);
       if (day.isEmpty) {
-        context.setFillColor(new Color('#ffffff', 0));
-      } else {
-        const color = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
-        context.setFillColor(color);
-        context.setStrokeColor(color);
-        context.setTextColor(color);
+        color = new Color('#ffffff', 0);
       }
 
-      const backgroundPath = new Path();
-      backgroundPath.addRoundedRect(new Rect(0, 0, width, height), height / 2, height / 2);
-      context.addPath(backgroundPath);
-      context.fillPath();
-
-      const splitLineImage = splitLineStack.addImage(context.getImage());
+      const splitLineImage = splitLineStack.addImage(drawLine(width, height, color));
       splitLineImage.centerAlignImage();
     }
   });

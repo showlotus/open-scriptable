@@ -189,7 +189,14 @@ function render() {
       context.size = new Size(width, height);
       context.opaque = false;
       context.respectScreenScale = true;
-      context.setFillColor(Color.dynamic(new Color('#E5E5E5'), new Color('#333333')));
+      if (day.isEmpty) {
+        context.setFillColor(new Color('#ffffff', 0));
+      } else {
+        const color = Color.dynamic(new Color('#E5E5E5'), new Color('#333333'));
+        context.setFillColor(color);
+        context.setStrokeColor(color);
+        context.setTextColor(color);
+      }
 
       const backgroundPath = new Path();
       backgroundPath.addRoundedRect(new Rect(0, 0, width, height), height / 2, height / 2);

@@ -8,6 +8,11 @@
     "type": "git",
     "url": "https://github.com/showlotus/open-scriptable"
   },
+  "exports": {
+    "./count-down": "./dist/count-down.js",
+    "./hello-world": "./dist/hello-world.js",
+    "./dev": "./dist/dev.js"
+  },
   "files": [
     "dist",
     "*.d.ts"

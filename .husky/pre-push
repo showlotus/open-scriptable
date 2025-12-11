@@ -4,7 +4,7 @@
 branch=$(git symbolic-ref --short HEAD)
 
 # 检查是否 push 到 master 分支
-if [ "$branch" = "master" ]; then
+if [ "$branch" = "_master" ]; then
   echo "🔍 检测到 push 到 master 分支，检查 version 是否已更新..."
   node scripts/check-version.js
   

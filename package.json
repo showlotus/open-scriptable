@@ -17,6 +17,7 @@
     "build": "vite build",
     "prepare": "husky",
     "lint-staged": "lint-staged",
+    "release": "node scripts/release.js",
     "postpublish": "node scripts/post-publish.js"
   },
   "keywords": [

@@ -1,14 +1,8 @@
-export {};
-
-function getConfig(prop: string, defaultValue: any = '') {
-  try {
-    return __GLOBAL_CONFIG__[prop];
-  } catch (error) {
-    return defaultValue;
-  }
+interface Options {
+  name?: string;
 }
 
-async function render() {
+async function render(options: Options) {
   let widgetSize: string;
   // 获取当前小组件的尺寸
   if (config.runsInWidget) {
@@ -18,11 +12,15 @@ async function render() {
     widgetSize = 'small';
   }
 
+  function getConfig<K extends keyof Options>(prop: K, defaultValue: Options[K]) {
+    return options[prop] || defaultValue;
+  }
+
   function createWidget(widgetSize: string) {
     const widget = new ListWidget();
     widget.backgroundColor = Color.dynamic(new Color('#FFFFFF'), new Color('#1c1c1c'));
 
-    const text = widget.addText(`Hello, ${getConfig('name', 'World')}`);
+    const text = widget.addText(`Hello, ${args.widgetParameter || getConfig('name', 'World')}`);
     text.textColor = Color.dynamic(new Color('#000000'), new Color('#FFFFFF'));
     text.font = Font.boldSystemFont(16);
     text.centerAlignText();
@@ -48,7 +46,6 @@ async function render() {
       widget.presentLarge();
     }
   }
-  return widget;
 }
 
-render();
+export { render };

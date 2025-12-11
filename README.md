@@ -3,17 +3,16 @@
 ## 使用示例
 
 ```javascript
-// 全局配置
-const __GLOBAL_CONFIG__ = {
+// 配置
+const config = {
   name: 'World',
 };
 // 加载脚本
 const url = 'https://cdn.jsdelivr.net/npm/@showlotus/open-scriptable@latest/dist/hello-world.js';
 const code = await new Request(url).loadString();
 // 执行脚本
-const body = `const __GLOBAL_CONFIG__ = ${JSON.stringify(__GLOBAL_CONFIG__)};\n${code}`;
-const render = new Function(body);
-await render();
+const render = new Function(code)();
+await render(config);
 ```
 
 <div>
@@ -26,23 +25,9 @@ await render();
 ### 倒计时组件
 
 ```js
-// 全局配置
-const __GLOBAL_CONFIG__ = {
-  days: {
-    元旦: '2026-01-01',
-    春节: '2026-02-17',
-    清明节: '2026-04-04',
-    劳动节: '2026-05-01',
-    端午节: '2026-06-19',
-    国庆节: '2026-10-01',
-    中秋节: '2026-10-06',
-  },
-};
-
 const url = 'https://cdn.jsdelivr.net/npm/@showlotus/open-scriptable@latest/dist/count-down.js';
 const code = await new Request(url).loadString();
-const body = `const __GLOBAL_CONFIG__ = ${JSON.stringify(__GLOBAL_CONFIG__)};\n${code}`;
-const render = new Function(body);
+const render = new Function(code)();
 await render();
 ```
 

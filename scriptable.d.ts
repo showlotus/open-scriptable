@@ -389,16 +389,61 @@ declare global {
 
   /**
    * 颜色类
+   * 存储颜色数据，包括透明度
    */
   class Color {
+    /** HEX 表示 */
+    readonly hex: string;
+    /** 红色分量 */
+    readonly red: number;
+    /** 绿色分量 */
+    readonly green: number;
+    /** 蓝色分量 */
+    readonly blue: number;
+    /** 透明度 */
+    readonly alpha: number;
+
+    /**
+     * 构造函数
+     * 使用十六进制值创建颜色，可选透明度
+     * @param hex 十六进制值，例如 #FF0000、#00ff0080、#00f、#ff（# 可选）
+     * @param alpha 透明度值（可选）
+     */
     constructor(hex: string, alpha?: number);
+
     /** 创建动态颜色（支持亮色和暗色模式） */
     static dynamic(lightColor: Color, darkColor: Color): Color;
+
+    /** 创建黑色 */
     static black(): Color;
+    /** 创建深灰色 */
+    static darkGray(): Color;
+    /** 创建浅灰色 */
+    static lightGray(): Color;
+    /** 创建白色 */
     static white(): Color;
+    /** 创建灰色 */
+    static gray(): Color;
+    /** 创建红色 */
     static red(): Color;
+    /** 创建绿色 */
     static green(): Color;
+    /** 创建蓝色 */
     static blue(): Color;
+    /** 创建青色 */
+    static cyan(): Color;
+    /** 创建黄色 */
+    static yellow(): Color;
+    /** 创建洋红色 */
+    static magenta(): Color;
+    /** 创建橙色 */
+    static orange(): Color;
+    /** 创建紫色 */
+    static purple(): Color;
+    /** 创建棕色 */
+    static brown(): Color;
+    /** 创建透明色 */
+    static clear(): Color;
   }
 
   /**

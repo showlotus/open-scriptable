@@ -17,7 +17,7 @@ const input = readdirSync('./src')
 export default defineConfig(({ mode }) => {
   return {
     build: {
-      target: 'es2015',
+      target: 'es2017',
       outDir: 'dist',
       // minify: 'terser',
       rollupOptions: {

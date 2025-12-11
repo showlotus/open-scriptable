@@ -44,7 +44,7 @@ interface Theme {
   emptyLineColor: Color;
 }
 
-async function render(options: Options) {
+async function render(options: Options = {}) {
   // 不同尺寸的要展示的数量
   const sizeConfig: Record<string, number> = {
     small: 3,

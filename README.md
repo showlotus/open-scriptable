@@ -1,5 +1,9 @@
 # Open-source Scriptable scripts for iOS Widgets
 
+参考文档：
+
+- [Scriptable API 文档](https://docs.scriptable.app/)
+
 ## 使用示例
 
 ```javascript

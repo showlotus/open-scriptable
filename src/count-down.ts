@@ -149,6 +149,13 @@ async function render(options: Options = {}) {
     }, {});
   }
 
+  function getCalshowUrl(date: Date) {
+    const now = Math.floor(date.getTime() / 1000);
+    // 2001-01-01 00:00:00
+    const start = 978307200;
+    return `calshow:${now - start}`;
+  }
+
   async function getCalendarData() {
     const calendars = await Calendar.forEvents();
 
@@ -171,6 +178,10 @@ async function render(options: Options = {}) {
           isEmpty: false,
           type: event.calendar.title,
           color: '#' + event.calendar.color.hex,
+          // 定位到事件
+          eventUrl: `x-apple-calevent://${event.identifier.replace(/:/g, '/')}`,
+          // 定位到天
+          calshowUrl: getCalshowUrl(event.startDate),
         };
       })
       .filter(v => {
@@ -239,7 +250,7 @@ async function render(options: Options = {}) {
     .slice(0, displayCount);
 
   for (let i = 0; i < displayCount; i++) {
-    const day = calendarData[i] || { name: '', date: '', isEmpty: true };
+    const day = calendarData[i] || { name: '', date: '', isEmpty: true, eventUrl: '', calshowUrl: '' };
     // 创建行容器（水平布局）
     const row = widget.addStack();
     row.layoutHorizontally();
@@ -248,6 +259,10 @@ async function render(options: Options = {}) {
     const leftContent = row.addStack();
     leftContent.layoutVertically();
     leftContent.spacing = 1;
+    // 打开日历事件
+    if (day.eventUrl) {
+      leftContent.url = day.eventUrl;
+    }
 
     // 标题行
     const titleRow = leftContent.addStack();

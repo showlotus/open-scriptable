@@ -159,10 +159,10 @@ async function render(options: Options = {}) {
   async function getCalendarData() {
     const calendars = await Calendar.forEvents();
 
-    // 获取当前日期后 6 个月内的数据
+    // 获取当前日期后 12 个月内的数据
     const start = new Date();
     const end = new Date();
-    end.setMonth(end.getMonth() + 6);
+    end.setMonth(end.getMonth() + 12);
 
     const events = await CalendarEvent.between(start, end, calendars);
     const data = events

@@ -43,6 +43,8 @@ await render();
 
 示例：小组件参数填写 `节假日,double`
 
+使用指南：[【iOS】倒计时小组件可以自动关联日历啦✨ - showlotus](https://www.xiaohongshu.com/discovery/item/693ad4e1000000001b0213f9?source=webshare&xhsshare=pc_web&xsec_token=AB7rXUtVvD9i-FRNDkZ48ctiVz2JxS_fcZY2waWv-enoA=&xsec_source=pc_share)
+
 <!-- <div>
   <img src="./res/count-down/light.jpeg" alt="light" width="300">
   <img src="./res/count-down/dark.jpeg" alt="dark" width="300">

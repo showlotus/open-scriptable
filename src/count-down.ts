@@ -11,6 +11,10 @@ interface Options {
    * 日历是否启用
    */
   calendarEnabled?: boolean;
+  /**
+   * 布局模式：single 单列 / double 双列（仅中号、大号生效）
+   */
+  layout?: 'single' | 'double';
 }
 
 interface Theme {
@@ -45,13 +49,6 @@ interface Theme {
 }
 
 async function render(options: Options = {}) {
-  // 不同尺寸的要展示的数量
-  const sizeConfig: Record<string, number> = {
-    small: 3,
-    medium: 3,
-    large: 7,
-  };
-
   let widgetSize: string;
   // 获取当前小组件的尺寸
   if (config.runsInWidget) {
@@ -61,10 +58,29 @@ async function render(options: Options = {}) {
     widgetSize = 'large';
   }
 
-  const displayCount: number = sizeConfig[widgetSize];
-
+  // 小部件参数：日历类型,布局（single/double），中英文逗号均可
   const parameters = args.widgetParameter?.trim();
-  const [calendarTypes = '', theme = 'default'] = parameters?.split(',') || [];
+  const segments = parameters?.split(/,|，/).map(segment => segment.trim()) || [];
+  const [firstSegment = '', secondSegment = ''] = segments;
+
+  // 只传一段且是布局关键词时，视为布局而非日历类型
+  const onlyLayout = !secondSegment && ['single', 'double'].includes(firstSegment.toLowerCase());
+  const calendarTypes = onlyLayout ? '' : firstSegment;
+  const layoutParam = onlyLayout ? firstSegment : secondSegment;
+
+  // 布局模式：options 优先，其次小部件参数，默认单列
+  const layout: 'single' | 'double' =
+    getConfig('layout', layoutParam.toLowerCase() === 'double' ? 'double' : 'single') ?? 'single';
+
+  // 双列布局仅中号、大号生效，小号保持单列
+  const isDoubleLayout = layout === 'double' && widgetSize !== 'small';
+
+  // 不同尺寸的要展示的数量
+  const sizeConfig: Record<string, number> = isDoubleLayout
+    ? { small: 3, medium: 6, large: 14 }
+    : { small: 3, medium: 3, large: 7 };
+
+  const displayCount: number = sizeConfig[widgetSize];
 
   const themes: Record<string, Theme> = {
     default: {
@@ -125,22 +141,6 @@ async function render(options: Options = {}) {
     }
   }
 
-  // 绘制线段
-  function drawLine(width: number, height: number, color: Color) {
-    const context = new DrawContext();
-    context.size = new Size(width, height);
-    context.opaque = false;
-    context.respectScreenScale = true;
-    context.setFillColor(color);
-
-    const backgroundPath = new Path();
-    backgroundPath.addRoundedRect(new Rect(0, 0, width, height), height / 2, height / 2);
-    context.addPath(backgroundPath);
-    context.fillPath();
-
-    return context.getImage();
-  }
-
   function groupBy(data: any[], key: string) {
     return data.reduce((acc, item) => {
       acc[item[key]] = acc[item[key]] || [];
@@ -167,10 +167,14 @@ async function render(options: Options = {}) {
     const events = await CalendarEvent.between(start, end, calendars);
     const data = events
       .map(event => {
-        const dateStr = formatDate(
-          event.startDate,
-          `yyyy/MM/dd${event.isAllDay ? '' : ' HH:mm'}${widgetSize === 'small' ? '' : ', EEEE'}`,
-        );
+        // 小号只显示年月日，双列显示到星期，单列中/大号按「日期 星期 时间」显示
+        const dateFormat =
+          widgetSize === 'small'
+            ? 'yyyy/MM/dd'
+            : isDoubleLayout
+              ? 'yyyy/MM/dd EEEE'
+              : `yyyy/MM/dd EEEE${event.isAllDay ? '' : ' HH:mm'}`;
+        const dateStr = formatDate(event.startDate, dateFormat);
         return {
           name: event.title,
           date: event.startDate,
@@ -249,14 +253,17 @@ async function render(options: Options = {}) {
     })
     .slice(0, displayCount);
 
-  for (let i = 0; i < displayCount; i++) {
-    const day = calendarData[i] || { name: '', date: '', isEmpty: true, eventUrl: '', calshowUrl: '' };
-    // 创建行容器（水平布局）
-    const row = widget.addStack();
-    row.layoutHorizontally();
+  // 获取指定位置的日期数据，不足时补空
+  function getDayItem(index: number) {
+    return calendarData[index] || { name: '', date: '', isEmpty: true, eventUrl: '', calshowUrl: '' };
+  }
 
+  type DayItem = ReturnType<typeof getDayItem>;
+
+  // 渲染单个倒计时项：左侧标题和日期，右侧天数
+  function renderItem(parent: WidgetStack, day: DayItem) {
     // 左侧内容区域（垂直布局）
-    const leftContent = row.addStack();
+    const leftContent = parent.addStack();
     leftContent.layoutVertically();
     leftContent.spacing = 1;
     // 打开日历事件
@@ -285,10 +292,10 @@ async function render(options: Options = {}) {
     dateText.textColor = currentTheme.dateDescriptionTextColor;
 
     // 添加弹性间隔，将右侧内容推到右边
-    row.addSpacer();
+    parent.addSpacer();
 
     // 右侧天数倒计时区域
-    const rightContent = row.addStack();
+    const rightContent = parent.addStack();
     rightContent.layoutHorizontally();
     rightContent.bottomAlignContent();
     rightContent.spacing = 2;
@@ -314,22 +321,73 @@ async function render(options: Options = {}) {
       dayText.textColor = currentTheme.daysUnitTextColor;
       dayText.rightAlignText();
     }
+  }
 
-    // 绘制分割线
-    if (i < displayCount - 1) {
-      const splitLineStack = widget.addStack();
-      splitLineStack.layoutHorizontally();
-      splitLineStack.centerAlignContent();
+  // 绘制分割线：弹性撑满整列宽度，用背景色代替图片；格子为空时使用透明分割线
+  function renderDivider(parent: ListWidget | WidgetStack, day: DayItem) {
+    const splitLineStack = parent.addStack();
+    splitLineStack.layoutHorizontally();
+    splitLineStack.addSpacer();
+    splitLineStack.backgroundColor = day.isEmpty ? currentTheme.emptyLineColor : currentTheme.lineColor;
+    splitLineStack.setPadding(0.5, 0, 0.5, 0);
+  }
 
-      const width = widgetSize === 'small' ? 126 : 305;
-      const height = 1;
-      let color = currentTheme.lineColor;
-      if (day.isEmpty) {
-        color = currentTheme.emptyLineColor;
+  if (isDoubleLayout) {
+    // 两列布局：从左到右、从上到下排列
+    // 两列之间的间距
+    const columnGap = 12;
+    const rows = displayCount / 2;
+    for (let row = 0; row < rows; row++) {
+      // 创建行容器（水平布局）
+      const gridRow = widget.addStack();
+      gridRow.layoutHorizontally();
+
+      const leftDay = getDayItem(row * 2);
+      const rightDay = getDayItem(row * 2 + 1);
+
+      // 左列格子（垂直布局：内容 + 独立分割线）
+      const leftCell = gridRow.addStack();
+      leftCell.layoutVertically();
+      leftCell.spacing = 8;
+
+      const leftItem = leftCell.addStack();
+      leftItem.layoutHorizontally();
+      renderItem(leftItem, leftDay);
+
+      // 绘制分割线
+      if (row < rows - 1) {
+        renderDivider(leftCell, leftDay);
       }
 
-      const splitLineImage = splitLineStack.addImage(drawLine(width, height, color));
-      splitLineImage.centerAlignImage();
+      // 两列之间的固定间距
+      gridRow.addSpacer(columnGap);
+
+      // 右列格子（垂直布局：内容 + 独立分割线）
+      const rightCell = gridRow.addStack();
+      rightCell.layoutVertically();
+      rightCell.spacing = 8;
+
+      const rightItem = rightCell.addStack();
+      rightItem.layoutHorizontally();
+      renderItem(rightItem, rightDay);
+
+      // 绘制分割线
+      if (row < rows - 1) {
+        renderDivider(rightCell, rightDay);
+      }
+    }
+  } else {
+    for (let i = 0; i < displayCount; i++) {
+      const day = getDayItem(i);
+      // 创建行容器（水平布局）
+      const row = widget.addStack();
+      row.layoutHorizontally();
+      renderItem(row, day);
+
+      // 绘制分割线
+      if (i < displayCount - 1) {
+        renderDivider(widget, day);
+      }
     }
   }
 

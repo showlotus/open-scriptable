@@ -12,9 +12,9 @@ interface Options {
    */
   calendarEnabled?: boolean;
   /**
-   * 布局模式：single 单列 / double 双列（仅中号、大号生效）
+   * 布局模式：single/单列 单列，double/双列 双列（仅中号、大号生效）
    */
-  layout?: 'single' | 'double';
+  layout?: string;
 }
 
 interface Theme {
@@ -58,19 +58,32 @@ async function render(options: Options = {}) {
     widgetSize = 'large';
   }
 
-  // 小部件参数：日历类型,布局（single/double），中英文逗号均可
+  // 布局关键词：中英文统一映射为 single/double
+  const layoutKeywords: Record<string, 'single' | 'double'> = {
+    single: 'single',
+    double: 'double',
+    单列: 'single',
+    双列: 'double',
+  };
+
+  // 解析布局关键词，未命中返回 undefined
+  function parseLayout(value?: string): 'single' | 'double' | undefined {
+    const key = value?.trim().toLowerCase();
+    return key ? layoutKeywords[key] : undefined;
+  }
+
+  // 小部件参数：日历类型,布局（single/double/单列/双列），中英文逗号均可
   const parameters = args.widgetParameter?.trim();
   const segments = parameters?.split(/,|，/).map(segment => segment.trim()) || [];
   const [firstSegment = '', secondSegment = ''] = segments;
 
-  // 只传一段且是布局关键词时，视为布局而非日历类型
-  const onlyLayout = !secondSegment && ['single', 'double'].includes(firstSegment.toLowerCase());
+  // 只传一段且是布局关键词（中英文）时，视为布局而非日历类型
+  const onlyLayout = !secondSegment && parseLayout(firstSegment) !== undefined;
   const calendarTypes = onlyLayout ? '' : firstSegment;
   const layoutParam = onlyLayout ? firstSegment : secondSegment;
 
   // 布局模式：options 优先，其次小部件参数，默认单列
-  const layout: 'single' | 'double' =
-    getConfig('layout', layoutParam.toLowerCase() === 'double' ? 'double' : 'single') ?? 'single';
+  const layout: 'single' | 'double' = parseLayout(getConfig('layout', layoutParam)) ?? 'single';
 
   // 双列布局仅中号、大号生效，小号保持单列
   const isDoubleLayout = layout === 'double' && widgetSize !== 'small';

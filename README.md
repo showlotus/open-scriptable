@@ -3,6 +3,7 @@
 参考文档：
 
 - [Scriptable API 文档](https://docs.scriptable.app/)
+<!-- - [图片合并网站](https://fulicat.com/lab/pintu/) -->
 
 ## 使用示例
 
